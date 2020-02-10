@@ -5,8 +5,10 @@
 #include <algorithm>
 #include <regex>
 
+
 using vectVectStr = std::vector<std::vector<std::string>>;
 using vectStr = std::vector<std::string>;
+
 
 auto checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std::string & mainContent)
 {
@@ -28,6 +30,7 @@ auto checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std
       }
 }
 
+
 auto setListOfFilesInVector(int &argc, char *argv[])
 {
     vectStr bufferOfFilesNames;
@@ -39,6 +42,7 @@ auto setListOfFilesInVector(int &argc, char *argv[])
 
     return bufferOfFilesNames;
 }
+
 
 vectStr split(std::string const & str, char symbol)
 {
@@ -58,6 +62,7 @@ vectStr split(std::string const & str, char symbol)
 
     return tmpContainer;
 }
+
 
 // template<typename ... Types>
 void checkIpBytesForValid(vectStr & vectForCheck)
@@ -84,6 +89,7 @@ void checkIpBytesForValid(vectStr & vectForCheck)
     return;
 }
 
+
 inline void show(vectVectStr & ipList)
 {
      for(auto ip = ipList.cbegin(); ip != ipList.cend(); ++ip)
@@ -101,17 +107,32 @@ inline void show(vectVectStr & ipList)
 }
 
 
-// template<typename ... Args> using argList = typename ... Args
-// vectVectStr filter(vectVectStr vect, argList args)
-// {
-//     std::sort(vect.begin(),vect.end());
-
-// }
-
 void sortIp(vectVectStr & ipList)
 {
     std::sort(ipList.rbegin(), ipList.rend());
 }
+
+
+vectVectStr filter_any(int param, vectVectStr & vInside)
+{
+    std::vector<std::vector<std::string>> ipSorted;
+ 
+    std::for_each(vInside.begin(), vInside.end(), [&ipSorted, param](vectStr element)
+    {
+        auto pos = std::any_of(element.begin(),element.end(),[=](std::string byteStr)
+        {
+            return std::to_string(param) == byteStr;
+        });
+ 
+        if(pos)
+        {
+            ipSorted.emplace_back(element);
+        }
+    });
+    
+    return ipSorted;
+}
+
 
 void checkForTrash(vectStr & ipForCheck)
 {
@@ -133,7 +154,7 @@ int main(int argc, char* argv[])
 {
     std::string mainContent;
     vectStr rows;
-    vectVectStr ipBytesStr;
+    vectVectStr ipBytesStr, filtredIp;
     
     checkFilesForOpenAndFillMainContent(setListOfFilesInVector(argc,argv), mainContent);
 
@@ -152,11 +173,12 @@ int main(int argc, char* argv[])
     }
     
    // show(ipBytesStr);
-    // std::cout << "----------------------------" << std::endl;
-    sortIp(ipBytesStr);
-    
+
     show(ipBytesStr);
+    std::cout << "----------------------------" << std::endl;
+    
+    filtredIp = filter_any(46, ipBytesStr);
+    show(filtredIp);
     
     return 0;
 }
-
