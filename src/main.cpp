@@ -91,7 +91,7 @@ void checkIpBytesForValid(vectStr & vectForCheck)
 
 
 inline void show(vectVectStr & ipList)
-{
+{ 
      for(auto ip = ipList.cbegin(); ip != ipList.cend(); ++ip)
      {
             for(auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
@@ -113,11 +113,11 @@ void sortIp(vectVectStr & ipList)
 }
 
 
-vectVectStr filter_any(int param, vectVectStr & vInside)
+vectVectStr filter_any(vectVectStr & vInside, int param)
 {
-    std::vector<std::vector<std::string>> ipSorted;
+    vectVectStr ipSorted;
  
-    std::for_each(vInside.begin(), vInside.end(), [&ipSorted, param](vectStr element)
+    std::for_each(vInside.begin(), vInside.end(), [&ipSorted, param](const vectStr & element)
     {
         auto pos = std::any_of(element.begin(),element.end(),[=](std::string byteStr)
         {
@@ -130,6 +130,28 @@ vectVectStr filter_any(int param, vectVectStr & vInside)
         }
     });
     
+    return ipSorted;
+}
+
+
+template<typename ... Args>
+vectVectStr filter(vectVectStr & ipBytesStr, const Args ... args)
+{
+    vectVectStr ipSorted;
+    
+    std::for_each(ipBytesStr.begin(), ipBytesStr.end(), [&ipSorted,args...](const vectStr & element)
+    {
+        vectStr forSearch;
+        (forSearch.emplace_back(std::to_string(args)), ...);
+        
+        bool pos = std::equal(forSearch.begin(), forSearch.end(), element.begin());
+
+        if(pos)
+        {
+            ipSorted.emplace_back(element);
+        }
+    });
+
     return ipSorted;
 }
 
@@ -147,6 +169,11 @@ void checkForTrash(vectStr & ipForCheck)
             i -= 1; // because counts of elements in vector after erase are decreasing but number of iteration must be same
         }
     }
+}
+
+void sort(vectVectStr & ipBytesStr)
+{
+
 }
 
 
@@ -172,13 +199,19 @@ int main(int argc, char* argv[])
         ipBytesStr.push_back(split(rows.at(i), '.'));
     }
     
-   // show(ipBytesStr);
-
     show(ipBytesStr);
-    std::cout << "----------------------------" << std::endl;
     
-    filtredIp = filter_any(46, ipBytesStr);
+    std::cout << "------------FILTER BY 1 ---------------------" << std::endl;
+    filtredIp = filter(ipBytesStr, 1);
     show(filtredIp);
     
+    std::cout << "------------FILTER BY 46 AND 70--------------" << std::endl;
+    filtredIp = filter(ipBytesStr, 46,70);
+    show(filtredIp);
+
+    std::cout << "------------FILTER BY ANY OF 46 --------------------" << std::endl;
+    filtredIp = filter_any(ipBytesStr, 46);
+    show(filtredIp);
+
     return 0;
 }
