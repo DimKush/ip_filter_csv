@@ -66,8 +66,6 @@ vectStr split(std::string const & str, char symbol)
 }
 
 
-void writeInFile
-
 bool lexiCompare(const vectInt &a, const vectInt &b)
 {
     return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end());
