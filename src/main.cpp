@@ -5,6 +5,9 @@
 #include <algorithm>
 #include <regex>
 
+#include <boost/log/trivial.hpp>
+
+
 
 using vectVectStr = std::vector<std::vector<std::string>>;
 using vectVectInt = std::vector<std::vector<int>>;
@@ -22,7 +25,7 @@ auto checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std
 
           if(!file)
           {
-              std::cout << "Cant find file : " << bufferOfFilesNames.at(i) << std::endl;
+              BOOST_LOG_TRIVIAL(info) << "Cant find file : " << bufferOfFilesNames.at(i);
           }
           else
           {

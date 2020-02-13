@@ -4,20 +4,25 @@ set(MAJOR_VERSION 0)
 set(MINOR_VERSION 0)
 set(ENV{TRAVIS_BUILD_NUMBER} 1) #plug
 
+ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK) #WTF?
+
 project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUILD_NUMBER})
 
-find_package(Boost REQUIRED)
+find_package(Threads)
+
+set(Boost_USE_STATIC_LIBS   ON)
 
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
 add_executable(ip_filter_csv.out ${PROJECT_SOURCE_DIR}/src/main.cpp)
-
 
 set_target_properties(ip_filter_csv.out PROPERTIES
                       CXX_STANDARD 17
                       CXX_STANDARD_REQUIRED ON
                       COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
 )
+
+target_link_libraries(ip_filter_csv.out boost_system boost_log Threads::Threads) # boost_system boost_log  WTF?
 
 install(TARGETS ip_filter_csv.out RUNTIME DESTINATION bin)
 
