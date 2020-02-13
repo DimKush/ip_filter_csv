@@ -7,7 +7,9 @@
 
 
 using vectVectStr = std::vector<std::vector<std::string>>;
-using vectStr = std::vector<std::string>;
+using vectVectInt = std::vector<std::vector<int>>;
+using vectStr     = std::vector<std::string>;
+using vectInt     = std::vector<int>;
 
 
 auto checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std::string & mainContent)
@@ -64,30 +66,19 @@ vectStr split(std::string const & str, char symbol)
 }
 
 
-// template<typename ... Types>
-void checkIpBytesForValid(vectStr & vectForCheck)
+void writeInFile
+
+bool lexiCompare(const vectInt &a, const vectInt &b)
 {
-    auto valForCheck = 0;
-
-    for(int j = 0 ; j < 4 ; j++)
-    {
-        valForCheck = std::stoi(vectForCheck.at(j)); 
-        std::cout << "val = " << valForCheck << std::endl;
-        std::cout << vectForCheck.at(j) << std::endl;
-        
-        if(valForCheck > 255)
-        {
-            vectForCheck.at(j) = "255";
-        }
-        else if(valForCheck < 0)
-        {
-            vectForCheck.at(j) = "0";
-        }
-
-        std::cout << '\t'<< vectForCheck.at(j) << std::endl;
-    }
-    return;
+    return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end());
 }
+
+
+void sortIp(vectVectInt & ip)
+{
+    std::sort(ip.rbegin(), ip.rend(), lexiCompare);
+}
+
 
 
 inline void show(vectVectStr & ipList)
@@ -107,21 +98,32 @@ inline void show(vectVectStr & ipList)
 }
 
 
-void sortIp(vectVectStr & ipList)
-{
-    std::sort(ipList.rbegin(), ipList.rend());
+inline void show(vectVectInt & ipList)
+{ 
+     for(auto ip = ipList.cbegin(); ip != ipList.cend(); ++ip)
+     {
+            for(auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+            {
+                if (ip_part != ip->cbegin())
+                {
+                    std::cout << ".";
+                }
+                std::cout << *ip_part;
+            }
+            std::cout << std::endl;
+     }
 }
 
 
-vectVectStr filter_any(vectVectStr & vInside, int param)
+vectVectInt filter_any(vectVectInt & vInside, int param)
 {
-    vectVectStr ipSorted;
+    vectVectInt ipSorted;
  
-    std::for_each(vInside.begin(), vInside.end(), [&ipSorted, param](const vectStr & element)
+    std::for_each(vInside.begin(), vInside.end(), [&ipSorted, param](const vectInt & element)
     {
-        auto pos = std::any_of(element.begin(),element.end(),[=](std::string byteStr)
+        auto pos = std::any_of(element.begin(),element.end(),[=](int byteStr)
         {
-            return std::to_string(param) == byteStr;
+            return param == byteStr;
         });
  
         if(pos)
@@ -135,15 +137,16 @@ vectVectStr filter_any(vectVectStr & vInside, int param)
 
 
 template<typename ... Args>
-vectVectStr filter(vectVectStr & ipBytesStr, const Args ... args)
+vectVectInt filter(vectVectInt & ipBytes, const Args ... args)
 {
-    vectVectStr ipSorted;
+    vectVectInt ipSorted;
     
-    std::for_each(ipBytesStr.begin(), ipBytesStr.end(), [&ipSorted,args...](const vectStr & element)
-    {
-        vectStr forSearch;
-        (forSearch.emplace_back(std::to_string(args)), ...);
+    vectInt forSearch;
         
+    (forSearch.emplace_back(args),...);
+
+    std::for_each(ipBytes.begin(), ipBytes.end(), [&ipSorted,&forSearch](const vectInt & element)
+    {
         bool pos = std::equal(forSearch.begin(), forSearch.end(), element.begin());
 
         if(pos)
@@ -171,9 +174,25 @@ void checkForTrash(vectStr & ipForCheck)
     }
 }
 
-void sort(vectVectStr & ipBytesStr)
-{
 
+vectVectInt convertToInt(const vectVectStr &ipSorted)
+{
+    vectVectInt ip;
+    vectInt ipByte; 
+
+    std::for_each(ipSorted.begin(), ipSorted.end(), [&ip, &ipByte](std::vector<std::string> element)
+    {  
+        ipByte.clear();
+
+        std::for_each(element.begin(), element.end(), [&ipByte](std::string byteStr)
+        {
+            ipByte.emplace_back(std::stoi(byteStr));
+        });
+
+        ip.emplace_back(ipByte);
+    });
+
+    return ip;
 }
 
 
@@ -181,8 +200,9 @@ int main(int argc, char* argv[])
 {
     std::string mainContent;
     vectStr rows;
-    vectVectStr ipBytesStr, filtredIp;
-    
+    vectVectStr ipBytesStr;
+    vectVectInt ip, filtredIp;
+
     checkFilesForOpenAndFillMainContent(setListOfFilesInVector(argc,argv), mainContent);
 
     rows = split(mainContent, '\n');
@@ -198,20 +218,24 @@ int main(int argc, char* argv[])
     {
         ipBytesStr.push_back(split(rows.at(i), '.'));
     }
+
+    ip = convertToInt(ipBytesStr); 
     
-    show(ipBytesStr);
+    sortIp(ip);
+
+    show(ip);
     
-    std::cout << "------------FILTER BY 1 ---------------------" << std::endl;
-    filtredIp = filter(ipBytesStr, 1);
+    std::cout << "---------------------FILTERED---------------------" << std::endl;
+    filtredIp = filter(ip, 1);
     show(filtredIp);
     
     std::cout << "------------FILTER BY 46 AND 70--------------" << std::endl;
-    filtredIp = filter(ipBytesStr, 46,70);
+    filtredIp = filter(ip, 46,70);
     show(filtredIp);
-
+    
     std::cout << "------------FILTER BY ANY OF 46 --------------------" << std::endl;
-    filtredIp = filter_any(ipBytesStr, 46);
+    filtredIp = filter_any(ip, 46);
     show(filtredIp);
-
+    
     return 0;
 }
