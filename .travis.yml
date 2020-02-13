@@ -1,0 +1,16 @@
+dist: xenial
+language: cpp
+compiler: clang
+addons:
+  apt:
+    packages:
+    - libboost-test-dev
+script:
+  - cmake .
+  - cmake --build .
+  - cmake --build . --target package
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -f -T ip_filter_csv-$MAJOR_VERSION.$MINOR_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb -udimkush:$BINTRAY_API_KEY "https://api.bintray.com/content/dimkush/filters/ip_filter_csv/$TRAVIS_BUILD_NUMBER/ip_filter_csv-$MAJOR_VERSION.$MINOR_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
