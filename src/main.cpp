@@ -5,10 +5,6 @@
 #include <algorithm>
 #include <regex>
 
-#include <boost/log/trivial.hpp>
-
-
-
 using vectVectStr = std::vector<std::vector<std::string>>;
 using vectVectInt = std::vector<std::vector<int>>;
 using vectStr     = std::vector<std::string>;
@@ -25,7 +21,7 @@ auto checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std
 
           if(!file)
           {
-              BOOST_LOG_TRIVIAL(info) << "Cant find file : " << bufferOfFilesNames.at(i);
+              std::cout << "Cant find file : " << bufferOfFilesNames.at(i);
           }
           else
           {
@@ -34,6 +30,32 @@ auto checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std
           }
       }
 }
+
+
+void writeInFile(const vectVectInt & ipInFile)
+{
+    std::ofstream file("ip_filter_csv_done.csv");
+
+    for(auto ip = ipInFile.cbegin(); ip != ipInFile.cend(); ++ip)
+    {
+        for(auto ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+        {
+            if (ip_part != ip->cbegin())
+            {
+                file << ".";
+            }
+            file << *ip_part;
+        }
+        file << "\n";
+    }
+}
+
+
+vectVectInt& concatenateIp(vectVectInt &basicIp,vectVectInt &ip)
+{
+    basicIp.insert(basicIp.end(), ip.begin(),ip.end());
+    return basicIp;
+} 
 
 
 auto setListOfFilesInVector(int &argc, char *argv[])
@@ -202,7 +224,7 @@ int main(int argc, char* argv[])
     std::string mainContent;
     vectStr rows;
     vectVectStr ipBytesStr;
-    vectVectInt ip, filtredIp;
+    vectVectInt ip, filtredIpOne, filtredIpTwo, filtredIpThree;
 
     checkFilesForOpenAndFillMainContent(setListOfFilesInVector(argc,argv), mainContent);
 
@@ -223,20 +245,18 @@ int main(int argc, char* argv[])
     ip = convertToInt(ipBytesStr); 
     
     sortIp(ip);
+    
+    filtredIpOne = filter(ip, 1);
 
-    show(ip);
-    
-    std::cout << "---------------------FILTERED---------------------" << std::endl;
-    filtredIp = filter(ip, 1);
-    show(filtredIp);
-    
-    std::cout << "------------FILTER BY 46 AND 70--------------" << std::endl;
-    filtredIp = filter(ip, 46,70);
-    show(filtredIp);
-    
-    std::cout << "------------FILTER BY ANY OF 46 --------------------" << std::endl;
-    filtredIp = filter_any(ip, 46);
-    show(filtredIp);
+    filtredIpTwo = filter(ip, 46,70); 
+
+    filtredIpThree = filter_any(ip, 46);
+
+    concatenateIp(ip, filtredIpOne);
+    concatenateIp(ip, filtredIpTwo);
+    concatenateIp(ip, filtredIpThree);
+
+    writeInFile(ip);
     
     return 0;
 }
