@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <regex>
 
+#include "lib.h"
+
 using vectVectStr = std::vector<std::vector<std::string>>;
 using vectVectInt = std::vector<std::vector<int>>;
 using vectStr     = std::vector<std::string>;
@@ -184,7 +186,7 @@ vectVectInt filter(vectVectInt & ipBytes, const Args ... args)
 
 void checkForTrash(vectStr & ipForCheck)
 {
-    std::regex regIp("^((25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])[\\.,\\s]){3}(25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])$");
+    std::regex regIp(REGEX_CONST);
     
     for(size_t i = 0 ; i < ipForCheck.size() ; i++)
     {
