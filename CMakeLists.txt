@@ -10,13 +10,25 @@ find_package(Boost REQUIRED)
 
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
-add_executable(ip_filter_csv.out ${PROJECT_SOURCE_DIR}/src/main.cpp)
+#source
+add_executable( ip_filter_csv.out 
+                ${PROJECT_SOURCE_DIR}/src/main.cpp
+)
 
-add_library(ip_filter_csv_unit_test_lib ${PROJECT_SOURCE_DIR}/lib/lib.cpp)
+add_library( ip_filter_csv_lib
+             ${PROJECT_SOURCE_DIR}/libSource/libSource.cpp
+)
 
-add_executable(ip_filter_csv_unit_test.out ${PROJECT_SOURCE_DIR}/src/unit.cpp)
+#unit
+add_library( ip_filter_csv_unit_test_lib 
+            ${PROJECT_SOURCE_DIR}/libUnitTest/libUnitTest.cpp
+)
+add_executable( ip_filter_csv_unit_test.out 
+                ${PROJECT_SOURCE_DIR}/src/unit.cpp
+)
 
-set_target_properties( ip_filter_csv.out ip_filter_csv_unit_test.out ip_filter_csv_unit_test_lib PROPERTIES
+#targets
+set_target_properties( ip_filter_csv.out ip_filter_csv_unit_test.out ip_filter_csv_unit_test_lib ip_filter_csv_lib PROPERTIES
                        CXX_STANDARD 17
                        CXX_STANDARD_REQUIRED ON
                        COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
@@ -29,10 +41,21 @@ set_target_properties( ip_filter_csv_unit_test.out PROPERTIES
 
 target_link_libraries( ip_filter_csv_unit_test.out
                        ${Boost_LIBRARIES}
-                       ip_filter_csv_unit_test_lib                 
+                       ip_filter_csv_unit_test_lib
+                       ip_filter_csv_lib                 
 )
 
+target_link_libraries( ip_filter_csv.out
+                       ip_filter_csv_lib
+)
 
+target_include_directories( ip_filter_csv.out PUBLIC
+                            ${PROJECT_SOURCE_DIR}/libSource
+)
+
+target_include_directories( ip_filter_csv_unit_test_lib PUBLIC
+                            ${PROJECT_SOURCE_DIR}/libSource
+)
 
 
 install(TARGETS ip_filter_csv.out RUNTIME DESTINATION bin)
