@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <regex>
 
-#include "lib.h"
+#include "../lib/lib.h"
 
 using vectVectStr = std::vector<std::vector<std::string>>;
 using vectVectInt = std::vector<std::vector<int>>;

@@ -27,10 +27,6 @@ set_target_properties( ip_filter_csv_unit_test.out PROPERTIES
                        INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(  ip_filter_csv.out
-                        ip_filter_csv_unit_test_lib
-)
-
 target_link_libraries( ip_filter_csv_unit_test.out
                        ${Boost_LIBRARIES}
                        ip_filter_csv_unit_test_lib                 
