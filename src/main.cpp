@@ -218,20 +218,31 @@ vectVectInt convertToInt(const vectVectStr &ipSorted)
     return ip;
 }
 
-bool isIpCorrect(const std::string & element)
-{
-    std::regex regIp("^((25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])[\\.,\\s]){3}(25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])$");
 
-    if(!std::regex_match(element, regIp))
+vectVectInt prepareIpContainer(const vectStr &rows)
+{
+    std::string element;
+    vectVectStr ipBytesStr;
+    
+    std::regex regIp("^((25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])[\\.,\\s]){3}(25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])$");
+    
+    for(auto i = rows.begin() ; i != rows.end() ; i++)
     {
-        std::cout << "drop ipForCheck = " << element << std::endl;
-        return false;
+        element = split(*(i),';').at(0);
+
+        if(std::regex_match(element, regIp))
+        {
+            ipBytesStr.push_back(split(element, '.'));
+        }
+        else
+        {
+            std::cout << "Elemnent : " << element << " was dropped.\n";
+        }
     }
-    else
-    {
-        return true;
-    }
+
+    return convertToInt(ipBytesStr);
 }
+
 
 int main(int argc, char* argv[])
 {
@@ -244,18 +255,8 @@ int main(int argc, char* argv[])
 
     rows = split(mainContent, '\n');
     
-    for(auto i = rows.begin() ; i != rows.end() ; i++)
-    {
-        element = split(*(i),';').at(0);
-
-        if(isIpCorrect(element))
-        {
-            ipBytesStr.push_back(split(element, '.'));
-        }
-    }
-
-    ip = convertToInt(ipBytesStr); 
-    
+    ip = prepareIpContainer(rows);
+ 
     sortIp(ip);
     
     filtredIpOne = filter(ip, 1);
