@@ -48,6 +48,7 @@ target_include_directories( ip_filter_csv.out PUBLIC
 target_link_libraries( unit_test_filter.out
                        ${GTEST_LIBRARIES}
                        pthread
+                       ip_filter_csv_lib
 )
 target_include_directories(unit_test_filter.out PUBLIC 
                             ${PROJECT_SOURCE_DIR}/libSource

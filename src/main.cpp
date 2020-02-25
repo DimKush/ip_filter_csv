@@ -2,7 +2,7 @@
 
 using namespace libSource;
 
-int main(int argc, char* argv[])
+int main(int argc, char **argv)
 {
     std::string mainContent;
     vectStr rows, ListOfFilesInVector;

@@ -13,7 +13,7 @@ namespace libSource
     using vectStr     = std::vector<std::string>;
     using vectInt     = std::vector<int>;
 
-    vectStr setListOfFilesInVector(int &argc, char *argv[]);
+    vectStr setListOfFilesInVector(int &argc, char **argv);
     
     void checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std::string & mainContent);
 

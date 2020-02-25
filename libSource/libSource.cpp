@@ -7,7 +7,7 @@
 
 namespace libSource
 {
-    vectStr setListOfFilesInVector(int &argc, char *argv[])
+    vectStr setListOfFilesInVector(int &argc, char **argv)
     {
         vectStr bufferOfFilesNames;
         

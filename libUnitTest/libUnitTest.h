@@ -8,4 +8,5 @@ extern char **globArgv;
 namespace UnitTests
 {
     bool checkBuildVersion();
+    int checkRegexp();
 };
