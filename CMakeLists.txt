@@ -6,55 +6,52 @@ set(ENV{TRAVIS_BUILD_NUMBER} 1) #plug
 
 project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUILD_NUMBER})
 
-find_package(Boost REQUIRED)
-
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
+
+#include directories
+find_package(GTest REQUIRED)
+
 
 #source
 add_executable( ip_filter_csv.out 
                 ${PROJECT_SOURCE_DIR}/src/main.cpp
 )
-
 add_library( ip_filter_csv_lib
              ${PROJECT_SOURCE_DIR}/libSource/libSource.cpp
+             ${PROJECT_SOURCE_DIR}/libSource/filters.tpp
 )
 
-#unit
-add_library( ip_filter_csv_unit_test_lib 
-            ${PROJECT_SOURCE_DIR}/libUnitTest/libUnitTest.cpp
-)
-add_executable( ip_filter_csv_unit_test.out 
+
+#unit test
+add_executable( unit_test_filter.out
                 ${PROJECT_SOURCE_DIR}/src/unit.cpp
+                ${PROJECT_SOURCE_DIR}/libUnitTest/libUnitTest.cpp
+                ${PROJECT_SOURCE_DIR}/libUnitTest/libUnitTest.h
 )
 
-#targets
-set_target_properties( ip_filter_csv.out ip_filter_csv_unit_test.out ip_filter_csv_unit_test_lib ip_filter_csv_lib PROPERTIES
+
+#targets source
+set_target_properties( ip_filter_csv.out ip_filter_csv_lib PROPERTIES
                        CXX_STANDARD 17
                        CXX_STANDARD_REQUIRED ON
                        COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
 )
-
-set_target_properties( ip_filter_csv_unit_test.out PROPERTIES
-                       COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-                       INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
-)
-
-target_link_libraries( ip_filter_csv_unit_test.out
-                       ${Boost_LIBRARIES}
-                       ip_filter_csv_unit_test_lib
-                       ip_filter_csv_lib                 
-)
-
 target_link_libraries( ip_filter_csv.out
                        ip_filter_csv_lib
 )
-
 target_include_directories( ip_filter_csv.out PUBLIC
                             ${PROJECT_SOURCE_DIR}/libSource
 )
 
-target_include_directories( ip_filter_csv_unit_test_lib PUBLIC
+
+#targets unit tests
+target_link_libraries( unit_test_filter.out
+                       ${GTEST_LIBRARIES}
+                       pthread
+)
+target_include_directories(unit_test_filter.out PUBLIC 
                             ${PROJECT_SOURCE_DIR}/libSource
+                            ${PROJECT_SOURCE_DIR}/libUnitTest
 )
 
 
@@ -71,7 +68,3 @@ set(CPACK_PACKAGE_CONTACT dimkysh@gmail.com)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 include(CPack)
-
-enable_testing()
-
-add_test(unit_test ip_filter_csv_unit_test.out)

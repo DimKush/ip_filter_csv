@@ -1,14 +1,11 @@
 #pragma once
+#include "libUnitTest.h"
+#include "../version.h"
 
-namespace libUnitTest
+extern int globArgc; 
+extern char **globArgv;
+
+namespace UnitTests
 {
-    enum class ERROR_TYPES : int
-    {
-        EMPTY_ROWS_CONTAINER, GOOD
-    };
-
-    int returnVersion();
-    int isRegexpValueCorrect();
-    ERROR_TYPES checkRowsContainer(const char * val);
-
-}
+    bool checkBuildVersion();
+};

@@ -1,56 +1,31 @@
-#include <string>
-#include <iostream>
-#include <exception>
-#include <algorithm>
-
-#include "libSource.h"
 #include "libUnitTest.h"
 #include "../version.h"
+#include "libSource.h"
+#include <gtest/gtest.h>
 
-using namespace libSource;
 
-
-namespace libUnitTest
+namespace UnitTests
 {
-    int returnVersion()
+    bool checkBuildVersion()
     {
-        return PROJECT_VERSION_PATCH;
+        return PROJECT_VERSION_PATCH > 0;
     }
 
-    int isRegexpValueCorrect()
+    int checkRegexp()
     {
-        const std::string regexIpVal("^((25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])[\\.,\\s]){3}(25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])$");
-        
-        return regexIpVal.compare(REGEX_CONST);
+       std::string constRegexp("^((25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])[\\.,\\s]){3}(25[0-5]|2[0-4][\\d]|1[\\d][\\d]|[\\d]?[\\d])$");
+       std::string currentRegexp(REGEX_CONST);
+
+       return constRegexp.compare(currentRegexp);
     }
+};
 
-    ERROR_TYPES checkRowsContainer(const char * val)
-    {
-        std::string content = std::string(val); 
-        vectStr rows;
-
-        try
-        {
-            rows = split(content, '\n');
-            
-            for(size_t i = 0 ; i < rows.size() ; i++)
-            {
-                rows.at(i) = split(rows.at(i),';').at(0);
-            }
-
-            std::for_each(rows.begin(), rows.end(), [](const std::string & element)
-            {
-                 throw element.empty();
-            });
-
-           
-        }
-        catch(const bool isRowsEmpty)
-        {
-            if(isRowsEmpty)
-                return ERROR_TYPES::EMPTY_ROWS_CONTAINER;
-        }
-
-        return ERROR_TYPES::GOOD;
-    }
+// unit tests
+TEST(checkVersion, versionController)
+{
+    ASSERT_EQ(true, UnitTests::checkBuildVersion());
+};
+TEST(checkRegexp, regexpController)
+{
+    ASSERT_EQ(0, UnitTests::checkRegexp());
 };
