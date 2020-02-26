@@ -1,4 +1,5 @@
 #include "libSource.h"
+#include <iostream>
 
 using namespace libSource;
 
@@ -8,10 +9,10 @@ int main(int argc, char **argv)
     vectStr rows, ListOfFilesInVector;
     vectVectStr ipBytesStr;
     vectVectInt ip, filtredIpOne, filtredIpTwo, filtredIpThree;
-
     
-    checkFilesForOpenAndFillMainContent(setListOfFilesInVector(argc,argv), mainContent);
+    checkFilesForOpenAndFillMainContent(setListOfFilesInVector(argc,argv), mainContent); // TODO: BUG = Then two files main content is empty 
 
+    std::cout << "mainContent" << mainContent << std::endl; 
     rows = split(mainContent, '\n');
     
     for(size_t i = 0 ; i < rows.size() ; i++)

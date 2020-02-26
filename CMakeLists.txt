@@ -8,7 +8,7 @@ project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUIL
 
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
-#include directories
+#include package
 find_package(GTest REQUIRED)
 
 
