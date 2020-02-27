@@ -23,8 +23,8 @@ namespace libSource
     vectStr split(std::string const & str, char symbol);
     bool lexiCompare(const vectInt &a, const vectInt &b);
     void sortIp(vectVectInt & ip);
-    inline void show(vectVectStr & ipList);
-    inline void show(vectVectInt & ipList);
+    void show(vectVectStr & ipList);
+    void show(vectVectInt & ipList);
     vectVectInt filter_any(vectVectInt & vInside, int param);
 
     template<typename ... Args>

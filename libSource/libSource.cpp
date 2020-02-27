@@ -103,7 +103,7 @@ namespace libSource
 
 
 
-    inline void show(vectVectStr & ipList)
+    void show(vectVectStr & ipList)
     { 
         for(auto ip = ipList.cbegin(); ip != ipList.cend(); ++ip)
         {
@@ -120,7 +120,7 @@ namespace libSource
     }
 
 
-    inline void show(vectVectInt & ipList)
+    void show(vectVectInt & ipList)
     { 
         for(auto ip = ipList.cbegin(); ip != ipList.cend(); ++ip)
         {
