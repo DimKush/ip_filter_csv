@@ -10,9 +10,10 @@ int main(int argc, char **argv)
     vectVectStr ipBytesStr;
     vectVectInt ip, filtredIpOne, filtredIpTwo, filtredIpThree;
     
-    checkFilesForOpenAndFillMainContent(setListOfFilesInVector(argc,argv), mainContent); // TODO: BUG = Then two files main content is empty 
+    ListOfFilesInVector = setListOfFilesInVector(argc,argv);
 
-    std::cout << "mainContent" << mainContent << std::endl; 
+    checkFilesForOpenAndFillMainContent(ListOfFilesInVector, mainContent);
+
     rows = split(mainContent, '\n');
     
     for(size_t i = 0 ; i < rows.size() ; i++)

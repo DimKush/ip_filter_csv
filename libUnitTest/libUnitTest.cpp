@@ -23,7 +23,6 @@ namespace UnitTests
         unitTestFileContent.emplace_back(std::string("113.162.145.156;111;0"));
         unitTestFileContent.emplace_back(std::string("157.1.222.234;5;6"));
         unitTestFileContent.emplace_back(std::string("157.84.232.134;5;6"));
-        unitTestFileContent.emplace_back(std::string("\n"));
         
         //second file
         unitTestFileSecondContent.emplace_back(std::string("1790.2101.1453.554;22;0"));
@@ -121,11 +120,6 @@ TEST(openAndPrepareContentFromFile, fillBufferOfFilenamesTest)
     }
     
     sample = setListOfFilesInVector(globArgc, globArgv);
-
-    for( auto i : sample)
-    {
-        std::cout << "sample element : " << i << "\n";
-    }
 
     ASSERT_TRUE(!sample.empty());
     ASSERT_EQ(globArgc - 1, sample.size()); // - 1 because first(0) calling in argc is the calling of program  

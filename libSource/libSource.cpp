@@ -23,9 +23,9 @@ namespace libSource
     void checkFilesForOpenAndFillMainContent(vectStr const & bufferOfFilesNames, std::string & mainContent)
     {
         std::ifstream file;
-
+        std::string strTmp;
         for(size_t i = 0 ; i < bufferOfFilesNames.size(); i++)
-        {
+        {  
             file.open(bufferOfFilesNames.at(i));
 
             if(!file)
@@ -34,7 +34,10 @@ namespace libSource
             }
             else
             {
-                mainContent.assign(std::istreambuf_iterator<char>(file),std::istreambuf_iterator<char>());
+                strTmp.assign(std::istreambuf_iterator<char>(file),std::istreambuf_iterator<char>());
+                
+                mainContent += strTmp;
+                
                 file.close();
             }
         }
