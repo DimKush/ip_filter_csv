@@ -202,8 +202,12 @@ TEST(openAndPrepareContentFromFile, FillBufferOfFilenamesTest)
     UnitTests::createTestFile();
 
     vectStr sample;
-
+    
+    for(int i = 1; i < globArgc; i++) // 1 - first argument in command line (name of program)
+       delete[] globArgv[i];
+ 
     globArgc = 3;
+ 
 
     globArgv[1] = new char[UnitTests::listOfFiles.at(0).size()];
     globArgv[2] = new char[UnitTests::listOfFiles.at(1).size()];
