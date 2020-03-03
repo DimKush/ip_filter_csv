@@ -39,3 +39,6 @@ version.h
 
 #csv
 *.csv
+
+#googletest
+/googletest
