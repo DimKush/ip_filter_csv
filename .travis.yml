@@ -6,7 +6,7 @@ compiler:
 addons:
   apt:
     packages:
-    - -clang-9
+    - clang-9
     - libgtest-dev
     - cmake
     - cmake-data 
