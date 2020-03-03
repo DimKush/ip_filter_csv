@@ -1,6 +1,8 @@
 dist: xenial
 language: cpp
-compiler: clang
+compiler: 
+      -clang
+      -gcc
 
 addons:
   apt:
@@ -12,7 +14,8 @@ addons:
 before_script:
   - sudo apt-get install cmake
   - cd /usr/src/gtest
-  - export CC=/usr/bin/clang CXX=/usr/bin/clang++ 
+  - export CC=/usr/bin/clang
+  - export CXX=/usr/bin/clang++ 
   - sudo cmake CMakeLists.txt
   - sudo make
   - sudo cp *.a /usr/lib
