@@ -25,7 +25,9 @@ before_script:
     - sudo cp *.a /usr/lib
 
 script:
-  - cd build/
+  - cd /usr/src
+  - mkdir build
+  - cd build 
   - sudo cmake .
   - sudo cmake --build .
   - sudo cmake --build . --target test
