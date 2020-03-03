@@ -12,7 +12,7 @@ namespace UnitTests
 {   
     std::string globContentFrmFiles;
     vectStr listOfFiles, unitTestFileContent, expectedFromTestFile, unitTestFileSecondContent, 
-            expectedAfterSplit, expectedAfterCheckForTrash; 
+            expectedAfterSplit, expectedAfterCheckForTrash, expectedAfterControlСharSplit; 
     
     vectVectStr expectedAfterSplitBytes;
     vectVectInt expectedAfterConvering, expectedSortedContainer, expectedFiltredFirst, expectedFiltredSecond, expectedFiltredAny;
@@ -66,7 +66,21 @@ namespace UnitTests
         
         for(auto i : unitTestFileSecondContent)
             globContentFrmFiles += i + '\n';
+        
+        // after split control character '\n' 
+        expectedAfterControlСharSplit.emplace_back(std::string("113.162.145.156;111;0"));
+        expectedAfterControlСharSplit.emplace_back(std::string("157.39.22.224;5;6"));
+        expectedAfterControlСharSplit.emplace_back(std::string("afsfsdfwr23r2323r"));
+        expectedAfterControlСharSplit.emplace_back(std::string(""));
+        expectedAfterControlСharSplit.emplace_back(std::string("1790.2101.1453.554;22;0"));
+        expectedAfterControlСharSplit.emplace_back(std::string("113.162.145.156;111;0"));
+        expectedAfterControlСharSplit.emplace_back(std::string("157.1.222.234;5;6"));
+        expectedAfterControlСharSplit.emplace_back(std::string("157.84.232.134;5;6"));
+        expectedAfterControlСharSplit.emplace_back(std::string("1790.2101.1453.554;22;0"));
+        expectedAfterControlСharSplit.emplace_back(std::string("113.162.145.156;111;0"));
+        expectedAfterControlСharSplit.emplace_back(std::string(""));
 
+        // after split container
         expectedAfterSplit.emplace_back(std::string("113.162.145.156"));
         expectedAfterSplit.emplace_back(std::string("157.39.22.224"));
         expectedAfterSplit.emplace_back(std::string("afsfsdfwr23r2323r"));
@@ -299,7 +313,6 @@ TEST(SortAndFilter, FilterTest)
 };
 
 
-
 TEST(SortAndFilter, FilterAnyTest)
 {
     vectVectInt sample = filter_any(UnitTests::expectedSortedContainer, 84);
@@ -307,6 +320,16 @@ TEST(SortAndFilter, FilterAnyTest)
     ASSERT_EQ(true, !sample.empty());
     ASSERT_TRUE(std::equal(sample.begin(), sample.end(),UnitTests::expectedFiltredAny.begin(), UnitTests::expectedFiltredAny.end()));
 };
+
+
+TEST(SortAndFilter, PrepareContainerTest)
+{
+    vectVectInt sample = prepareIpContainer(UnitTests::expectedAfterControlСharSplit);
+    
+    ASSERT_EQ(true, !sample.empty());
+    ASSERT_TRUE(std::equal(sample.begin(), sample.end(),UnitTests::expectedAfterConvering.begin(), UnitTests::expectedAfterConvering.end()));
+};
+
 
 TEST(WriteInFile, WriteInFileTest)
 {
