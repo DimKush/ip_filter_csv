@@ -25,10 +25,10 @@ before_script:
     - sudo cp *.a /usr/lib
 
 script:
-  - cmake .
-  - cmake --build .
-  - cmake --build . --target test
-  - cmake --build . --target package
+  - sudo cmake .
+  - sudo cmake --build .
+  - sudo cmake --build . --target test
+  - sudo cmake --build . --target package
 
 #deploy:
 #  provider: script
