@@ -69,3 +69,7 @@ set(CPACK_PACKAGE_CONTACT dimkysh@gmail.com)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 include(CPack)
+
+enable_testing()
+
+add_test(unit_test unit_test_filter.out)
