@@ -17,6 +17,7 @@ addons:
 env: TOOLSET=clang COMPILER=clang++-9 CXXSTD=c++17 TEST_SUITE=misc
 
 script:
+  - git submodule add git@github.com:google/googletest.git gtest
   - cmake .
   - cmake --build .
   - cmake --build . --target test
