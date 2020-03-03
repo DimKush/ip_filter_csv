@@ -1,4 +1,5 @@
 dist: xenial
+sudo: false #disable sudo in scripts
 language: cpp
 compiler: clang
 
@@ -15,23 +16,11 @@ addons:
     - cmake-data 
 env: TOOLSET=clang COMPILER=clang++-9 CXXSTD=c++17 TEST_SUITE=misc
 
-before_script:
-    - sudo apt-get install cmake
-    - cd /usr/src/gtest
-    - export CXX="clang++-9"
-    - export CC="clang-9"
-    - sudo cmake CMakeLists.txt
-    - sudo make
-    - sudo cp *.a /usr/lib
-
 script:
-  - cd /usr/src
-  - sudo mkdir build
-  - cd build 
-  - sudo cmake .
-  - sudo cmake --build .
-  - sudo cmake --build . --target test
-  - sudo cmake --build . --target package
+  - cmake .
+  - cmake --build .
+  - cmake --build . --target test
+  - cmake --build . --target package
 
 #deploy:
 #  provider: script

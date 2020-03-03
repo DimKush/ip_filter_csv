@@ -9,8 +9,8 @@ project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUIL
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
 #include package
-find_package(GTest REQUIRED)
-
+include(gtest.cmake)
+find_package (Threads)
 
 #source
 add_executable( ip_filter_csv.out 
@@ -46,8 +46,8 @@ target_include_directories( ip_filter_csv.out PUBLIC
 
 #targets unit tests
 target_link_libraries( unit_test_filter.out
-                       ${GTEST_LIBRARIES}
-                       pthread
+                       gtest
+                       ${CMAKE_THREAD_LIBS_INIT}
                        ip_filter_csv_lib
 )
 target_include_directories(unit_test_filter.out PUBLIC 
