@@ -16,6 +16,7 @@ addons:
 env: TOOLSET=clang COMPILER=clang++-9 CXXSTD=c++17 TEST_SUITE=misc
 
 before_script:
+    - ll
     - sudo apt-get install cmake
     - cd /usr/src/gtest
     - export CXX="clang++-9"
@@ -25,6 +26,7 @@ before_script:
     - sudo cp *.a /usr/lib
 
 script:
+  - ll
   - sudo cmake .
   - sudo cmake --build .
   - sudo cmake --build . --target test
