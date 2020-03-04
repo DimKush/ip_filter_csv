@@ -326,7 +326,7 @@ TEST(SortAndFilter, PrepareContainerTest)
 {
     vectVectInt sample = prepareIpContainer(UnitTests::expectedAfterControlСharSplit);
     
-    ASSERT_EQ(true, !sample.empty());
+    ASSERT_EQ(true, sample.empty());
     ASSERT_TRUE(std::equal(sample.begin(), sample.end(),UnitTests::expectedAfterConvering.begin(), UnitTests::expectedAfterConvering.end()));
 };
 
