@@ -9,9 +9,9 @@ project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUIL
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
 #include package
-enable_testing()
-
 add_subdirectory(./googletest)
+
+enable_testing()
 
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
