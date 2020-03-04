@@ -11,6 +11,10 @@ configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 #include package
 add_subdirectory(./googletest)
 
+enable_testing()
+
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
 find_package (Threads)
 
 #source
@@ -70,7 +74,5 @@ set(CPACK_PACKAGE_CONTACT dimkysh@gmail.com)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 include(CPack)
-
-enable_testing()
 
 add_test(unit_test unit_test_filter.out)
