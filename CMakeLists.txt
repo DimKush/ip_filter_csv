@@ -9,7 +9,11 @@ project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUIL
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
 #include package
+enable_testing()
+
 add_subdirectory(./googletest)
+
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 find_package (Threads)
 
@@ -70,7 +74,5 @@ set(CPACK_PACKAGE_CONTACT dimkysh@gmail.com)
 set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 
 include(CPack)
-
-enable_testing()
 
 add_test(unit_test unit_test_filter.out)
