@@ -34,5 +34,8 @@
 #build directory
 /build
 
-#
+#version generated from CMake
 version.h
+
+#csv
+*.csv

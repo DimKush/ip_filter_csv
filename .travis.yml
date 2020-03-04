@@ -1,17 +1,39 @@
 dist: xenial
+sudo: false #disable sudo in scripts
 language: cpp
 compiler: clang
+
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main'
+      key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
     packages:
+    - clang-9
     - cmake
-    - libboost-all-dev
+    - cmake-data 
+env: TOOLSET=clang COMPILER=clang++-9 CXXSTD=c++17 TEST_SUITE=misc
+
+before_script:
+    - export CXX="clang++-9"
+    - export CC="clang-9"
+
 script:
   - cmake .
   - cmake --build .
+  - cmake --build . --target test
   - cmake --build . --target package
+
+  before_deploy:
+  - sed -i "s/__VERSION__/$TRAVIS_BUILD_NUMBER/g" bintray-descriptor.json
+  - cat bintray-descriptor.json
+
 deploy:
-  provider: script
   skip_cleanup: true
-  script:
-  - curl -f -T ip_filter_csv-$MAJOR_VERSION.$MINOR_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb -udimkush:$BINTRAY_API_KEY "https://api.bintray.com/content/dimkush/filters/ip_filter_csv/$TRAVIS_BUILD_NUMBER/ip_filter_csv-$MAJOR_VERSION.$MINOR_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
+  provider: bintray
+   on:
+    all_branches: true
+  file: bintray-descriptor.json
+  user: $BINTRAY_USER
+  key:  $BINTRAY_API_KEY
