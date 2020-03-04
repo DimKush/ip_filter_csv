@@ -15,7 +15,7 @@ addons:
     - cmake-data 
 env: TOOLSET=clang COMPILER=clang++-9 CXXSTD=c++17 TEST_SUITE=misc
 
-#before_script:
+before_script:
 #    - sudo apt-get install cmake
     - export CXX="clang++-9"
     - export CC="clang-9"
