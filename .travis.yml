@@ -32,8 +32,6 @@ script:
 deploy:
   skip_cleanup: true
   provider: bintray
-   on:
-    all_branches: true
   file: bintray-descriptor.json
   user: $BINTRAY_USER
   key:  $BINTRAY_API_KEY
