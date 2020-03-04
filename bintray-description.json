@@ -1,0 +1,27 @@
+{
+    "package": {
+        "name": "filters",
+        "repo": "filters",
+        "subject": "ip_filter_csv",
+        "vcs_url": "https://github.com/DimKush/ip_filter_csv.git"
+    },
+    "version": {
+        "name": "ip_filter_csv __VERSION__",
+        "desc": "ip filter for csv files __VERSION__"
+    },
+    "licenses": ["BSD"],
+    "desc": "Debian package built and deployed completely automatically",
+     "files": [
+        {
+            "includePattern": "./(.[^/]*(\\.deb)$)",
+            "uploadPattern": "$1",
+            "matrixParams": {
+                "deb_distribution": "xenial",
+                "deb_component": "main",
+                "deb_architecture": "amd64"
+            }
+        }
+    ],
+    "publish": true,
+    "override": true
+}
