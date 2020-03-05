@@ -25,13 +25,8 @@ script:
   - cmake --build . --target test
   - cmake --build . --target package
 
-before_deploy:
-  - sed -i "s/__VERSION__/$TRAVIS_BUILD_NUMBER/g" bintray-description.json
-  - cat bintray-description.json
-
 deploy:
+  provider: script
   skip_cleanup: true
-  provider: bintray
-  file: bintray-description.json
-  user: $BINTRAY_USER
-  key: $BINTRAY_API_KEY
+  script:
+  - curl -f -T ip_filter_csv-$MAJOR_VERSION.$MINOR_VERSION.$TRAVIS_BUILD_NUMBER-Xenial.deb -udimkush:$BINTRAY_API_KEY "https://api.bintray.com/content/dimkush/filters/ip_filter_csv/$TRAVIS_BUILD_NUMBER/ip_filter_csv-$MAJOR_VERSION.$MINOR_VERSION.$TRAVIS_BUILD_NUMBER-Xenial.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
