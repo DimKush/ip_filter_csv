@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(ENV{MAJOR_VERSION} 0)
+set(ENV{MAJOR_VERSION} 1)
 set(ENV{MINOR_VERSION} 1)
 #set(ENV{TRAVIS_BUILD_NUMBER} 1) #plug
 
