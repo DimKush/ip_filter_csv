@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(MAJOR_VERSION 0)
-set(MINOR_VERSION 1)
+set(ENV{MAJOR_VERSION} 0)
+set(ENV{MINOR_VERSION} 1)
 #set(ENV{TRAVIS_BUILD_NUMBER} 1) #plug
 
-project(ip_filter_csv VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.$ENV{TRAVIS_BUILD_NUMBER})
+project(ip_filter_csv VERSION $ENV{MAJOR_VERSION}.$ENV{MINOR_VERSION}.$ENV{TRAVIS_BUILD_NUMBER})
 
 configure_file(version.vers ${PROJECT_SOURCE_DIR}/version.h)
 
