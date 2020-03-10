@@ -8,7 +8,7 @@ Ip filter from csv
 
 ## Ip filter csv
 This program processing ip for validation bytes.
-You giving .csv files like arguments in command line then you calling the program.
+You giving .csv files like arguments in command line when you calling the program.
 Example: 
 >ip_filter_csv.out path/to/your/csv/example.csv path/to/your/second/csv/exampleSecond.csv 
 
