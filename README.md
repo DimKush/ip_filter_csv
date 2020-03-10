@@ -25,4 +25,8 @@ Columns must be splited by ';' symbol.
 When you give .csv file to application, application start the process. The process includes steps:
 
 [First step](https://github.com/DimKush/ip_filter_csv/blob/master/libSource/libSource.cpp#L10)
-Application making std::vector<std::string> of files names witch was move from command line.   
+Application making std::vector of std::string of files names witch was move from command line in this container for processing.
+[Second step](https://github.com/DimKush/ip_filter_csv/blob/master/libSource/libSource.cpp#L23)
+Application try to open your .csv files and save content from .csv files to the big std::string witch will be processing later.
+If on of the file from command line cannot be open, application will pass it.
+[Third step]()
