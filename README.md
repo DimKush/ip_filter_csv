@@ -30,7 +30,8 @@ Application making std::vector of std::string of files names witch was move from
 
 [Second step](https://github.com/DimKush/ip_filter_csv/blob/master/libSource/libSource.cpp#L23)
 Application try to open your .csv files and save content from .csv files to the big std::string witch will be processing later.
-If on of the file from command line cannot be open, application will pass it.
+If one of the files list from command line cannot be opened, application will pass this file. The application will call string to command line like
 
+>Cannot find file : path/to/your/csv/example.csv
 
 [Third step]()
